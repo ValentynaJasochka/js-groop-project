@@ -45,12 +45,14 @@ const param = {
   bookCategoriesList: document.querySelector('.book-categories-list'),
   booksPopularCategoris: document.querySelector('.popular-books'),
   mainPage: document.querySelector('.main-content'),
+  seeMoreBtn: document.querySelectorAll('.popular-books-btn'),
 };
 const {
   charityOrganizations,
   bookCategoriesList,
   booksPopularCategoris,
   mainPage,
+  seeMoreBtn,
 } = param;
 
 // Розмітка для Благодійних організацій
@@ -155,12 +157,21 @@ function creatMurcupTopBooks(arr) {
   });
   booksPopularCategoris.innerHTML = arrForMarcup.join(' ');
 }
-
+//  Реалізація завантаження при натисканні на кнопку
 const URL_BOOK_GROOP =
   'https://books-backend.p.goit.global/books/category?category=';
 
-async function fetchBookGroop(url, groopName) {
-  //   console.log(`${url}${groopName}`);
+console.dir(seeMoreBtn);
+booksPopularCategoris.addEventListener('click', loadMoreBooks);
+function loadMoreBooks(evt) {
+  if (evt.target.className === 'popular-books-btn') {
+    const targetCategory = evt.target.parentNode.firstElementChild.textContent;
+    //   creatMurcupBookGroop(data, targetCategory);
+    fetchBookGroop(URL_BOOK_GROOP, targetCategory, creatMurcupBookGroop);
+  }
+}
+
+async function fetchBookGroop(url, groopName, collback) {
   const response = await fetch(`${url}${groopName}`)
     .then(response => {
       if (!response.ok) {
@@ -170,7 +181,7 @@ async function fetchBookGroop(url, groopName) {
     })
     .then(data => {
       console.dir(data);
-      creatMurcupBookGroop(data, groopName);
+      collback(data, groopName);
     })
     .catch(error => {
       console.dir(error);
@@ -180,13 +191,10 @@ async function fetchBookGroop(url, groopName) {
 bookCategoriesList.addEventListener('click', selectMurcupBookGroop);
 function selectMurcupBookGroop(evt) {
   const category = evt.target.textContent;
-  fetchBookGroop(URL_BOOK_GROOP, category);
+  fetchBookGroop(URL_BOOK_GROOP, category, creatMurcupBookGroop);
 }
 
 function creatMurcupBookGroop(data, groopName) {
-  //   console.dir(mainPage.firstElementChild);
-  //   console.dir(mainPage.lastElementChild);
-  //   mainPage.innerHTML = '';
   mainPage.firstElementChild.textContent = `${groopName}`;
   const marcup = data.map(({ author, book_image, title }) => {
     return ` <li>
