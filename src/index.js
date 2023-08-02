@@ -103,7 +103,7 @@ function creatMurcupBookCategory(arrBookCategoriry) {
   const arrForMarcup = arrBookCategoriry.map(
     ({ list_name: bookCategoryName }) => {
       return `<li>
-          <span class="counter">${bookCategoryName}</span>
+          <span class="category">${bookCategoryName}</span>
                     </li>`;
     }
   );

@@ -77,6 +77,16 @@ ol {
   line-height: 24px;
   letter-spacing: -0.36px;
 }
+.category:focus,
+.category:hover {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: -0.36px;
+  text-transform: uppercase;
+  color: #4f2ee8;
+}
 .charity {
   border-radius: 16px;
   background: radial-gradient(
