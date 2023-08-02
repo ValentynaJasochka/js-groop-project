@@ -44,9 +44,14 @@ const param = {
   charityOrganizations: document.querySelector('.support'),
   bookCategoriesList: document.querySelector('.book-categories-list'),
   booksPopularCategoris: document.querySelector('.popular-books'),
+  mainPage: document.querySelector('.main-content'),
 };
-const { charityOrganizations, bookCategoriesList, booksPopularCategoris } =
-  param;
+const {
+  charityOrganizations,
+  bookCategoriesList,
+  booksPopularCategoris,
+  mainPage,
+} = param;
 
 // Розмітка для Благодійних організацій
 
@@ -84,6 +89,7 @@ async function fetchBookCategory(url) {
       return response.json();
     })
     .then(data => {
+      console.dir(data);
       creatMurcupBookCategory(data);
     })
     .catch(error => {
@@ -148,4 +154,47 @@ function creatMurcupTopBooks(arr) {
     return marcup2;
   });
   booksPopularCategoris.innerHTML = arrForMarcup.join(' ');
+}
+
+const URL_BOOK_GROOP =
+  'https://books-backend.p.goit.global/books/category?category=';
+
+async function fetchBookGroop(url, groopName) {
+  //   console.log(`${url}${groopName}`);
+  const response = await fetch(`${url}${groopName}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.dir(data);
+      creatMurcupBookGroop(data, groopName);
+    })
+    .catch(error => {
+      console.dir(error);
+    });
+}
+
+bookCategoriesList.addEventListener('click', selectMurcupBookGroop);
+function selectMurcupBookGroop(evt) {
+  const category = evt.target.textContent;
+  fetchBookGroop(URL_BOOK_GROOP, category);
+}
+
+function creatMurcupBookGroop(data, groopName) {
+  //   console.dir(mainPage.firstElementChild);
+  //   console.dir(mainPage.lastElementChild);
+  //   mainPage.innerHTML = '';
+  mainPage.firstElementChild.textContent = `${groopName}`;
+  const marcup = data.map(({ author, book_image, title }) => {
+    return ` <li>
+                    <img class="popular-book-icon" src="${book_image}" alt="${title}" width = 180px />
+                    <h4 class="popular-book-title">${title}</h4>
+                    <span class="popular-book-author">${author}</span>
+                  </li>`;
+  });
+  booksPopularCategoris.innerHTML = marcup.join(' ');
+  booksPopularCategoris.classList.replace('popular-books', 'groop-book-page');
 }

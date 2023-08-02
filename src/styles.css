@@ -104,6 +104,10 @@ ol {
   height: 32px;
   width: 90px;
 }
+.groop-book-page {
+  display: flex;
+  flex-wrap: wrap;
+}
 .popular-books {
   display: flex;
   flex-direction: column;
